@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebGIS Mangrove KWPLH Balikpapan — Sistem Monitoring & Prediksi</title>
+    
+    <!-- Leaflet.js CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <!-- Leaflet Measure Plugin -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-measure@3.1.0/dist/leaflet-measure.css" />
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #0d1117;
+            color: #e6edf3;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ── HEADER ── */
+        header {
+            background: linear-gradient(135deg, #1a2f23 0%, #0f3d2e 100%);
+            border-bottom: 2px solid #2d6a4f;
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.4);
+            z-index: 1000;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .logo-icon {
+            width: 40px; height: 40px;
+            background: linear-gradient(135deg, #40916c, #74c69d);
+            border-radius: 8px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 22px;
+        }
+        .logo-text h1 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #74c69d;
+        }
+        .logo-text p {
+            font-size: 11px;
+            color: #8b9467;
+            margin-top: 1px;
+        }
+
+        .header-stats {
+            display: flex;
+            gap: 20px;
+        }
+        .stat-chip {
+            background: rgba(64, 145, 108, 0.15);
+            border: 1px solid #2d6a4f;
+            border-radius: 20px;
+            padding: 4px 14px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .stat-chip .dot {
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            background: #52b788;
+        }
+
+        /* ── MAIN LAYOUT ── */
+        .main-container {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        /* ── SIDEBAR ── */
+        .sidebar {
+            width: 300px;
+            background: #161b22;
+            border-right: 1px solid #21262d;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        .sidebar-section {
+            padding: 16px;
+            border-bottom: 1px solid #21262d;
+        }
+        .sidebar-section h3 {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: #7d8590;
+            margin-bottom: 12px;
+        }
+
+        /* Layer Control */
+        .layer-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-bottom: 4px;
+        }
+        .layer-item:hover { background: #21262d; }
+        .layer-item input[type="checkbox"] {
+            width: 16px; height: 16px;
+            accent-color: #52b788;
+            cursor: pointer;
+        }
+        .layer-color {
+            width: 14px; height: 14px;
+            border-radius: 3px;
+            flex-shrink: 0;
+        }
+        .layer-label { font-size: 13px; flex: 1; }
+        .layer-opacity {
+            width: 60px;
+            accent-color: #52b788;
+        }
+
+        /* Year Selector */
+        .year-buttons {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+        .year-btn {
+            padding: 5px 12px;
+            border: 1px solid #30363d;
+            background: #21262d;
+            color: #e6edf3;
+            border-radius: 20px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .year-btn:hover { border-color: #52b788; color: #52b788; }
+        .year-btn.active {
+            background: #2d6a4f;
+            border-color: #52b788;
+            color: #74c69d;
+            font-weight: 600;
+        }
+
+        /* Stats Panel */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+        .stat-card {
+            background: #21262d;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 10px 12px;
+            text-align: center;
+        }
+        .stat-card .value {
+            font-size: 20px;
+            font-weight: 700;
+            color: #52b788;
+        }
+        .stat-card .label {
+            font-size: 10px;
+            color: #7d8590;
+            margin-top: 2px;
+        }
+
+        /* Prediction Panel */
+        .prediction-bar {
+            background: #21262d;
+            border-radius: 6px;
+            padding: 10px 12px;
+            margin-bottom: 8px;
+            border-left: 3px solid #52b788;
+        }
+        .prediction-bar .pred-year {
+            font-size: 13px; font-weight: 600; color: #74c69d;
+        }
+        .prediction-bar .pred-area {
+            font-size: 18px; font-weight: 700; color: #e6edf3;
+        }
+        .prediction-bar .pred-change {
+            font-size: 11px; margin-top: 2px;
+        }
+        .change-up   { color: #52b788; }
+        .change-down { color: #f85149; }
+
+        /* Index legend */
+        .legend-gradient {
+            height: 14px;
+            border-radius: 4px;
+            background: linear-gradient(to right, #d62828, #f7b801, #52b788);
+            margin-bottom: 4px;
+        }
+        .legend-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 10px;
+            color: #7d8590;
+        }
+
+        /* ── MAP ── */
+        #map {
+            flex: 1;
+            position: relative;
+        }
+
+        /* ── FOOTER STATUS ── */
+        .map-toolbar {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(22, 27, 34, 0.92);
+            border: 1px solid #30363d;
+            border-radius: 24px;
+            padding: 8px 20px;
+            font-size: 12px;
+            color: #7d8590;
+            z-index: 500;
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .map-toolbar span { display: flex; align-items: center; gap: 4px; }
+        #coord-display { color: #52b788; font-family: monospace; }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 768px) {
+            .sidebar { display: none; }
+            .header-stats { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+    <div class="logo">
+        <div class="logo-icon">🌿</div>
+        <div class="logo-text">
+            <h1>WebGIS Mangrove KWPLH Balikpapan</h1>
+            <p>Sistem Monitoring & Prediksi — Kawasan Wisata Pendidikan Lingkungan Hidup</p>
+        </div>
+    </div>
+    <div class="header-stats">
+        <div class="stat-chip">
+            <div class="dot"></div>
+            <span>Model: Random Forest (Kappa 0.94)</span>
+        </div>
+        <div class="stat-chip">
+            <div class="dot" style="background:#3b82f6"></div>
+            <span>Data: Sentinel-2 / Landsat</span>
+        </div>
+    </div>
+</header>
+
+<!-- MAIN -->
+<div class="main-container">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <!-- Layer Control -->
+        <div class="sidebar-section">
+            <h3>📂 Layer Peta</h3>
+            <div class="layer-item">
+                <input type="checkbox" id="layer-mangrove" checked>
+                <div class="layer-color" style="background:#52b788"></div>
+                <span class="layer-label">Mangrove Eksisting</span>
+            </div>
+            <div class="layer-item">
+                <input type="checkbox" id="layer-prediction">
+                <div class="layer-color" style="background:#f7b801"></div>
+                <span class="layer-label">Prediksi 2030</span>
+            </div>
+            <div class="layer-item">
+                <input type="checkbox" id="layer-ndvi">
+                <div class="layer-color" style="background:#74c69d"></div>
+                <span class="layer-label">NDVI Layer</span>
+            </div>
+            <div class="layer-item">
+                <input type="checkbox" id="layer-change">
+                <div class="layer-color" style="background:#f85149"></div>
+                <span class="layer-label">Area Perubahan</span>
+            </div>
+        </div>
+
+        <!-- Year Selector -->
+        <div class="sidebar-section">
+            <h3>📅 Tahun Data</h3>
+            <div class="year-buttons">
+                <button class="year-btn" onclick="setYear(2014)">2014</button>
+                <button class="year-btn" onclick="setYear(2018)">2018</button>
+                <button class="year-btn active" onclick="setYear(2023)">2023</button>
+                <button class="year-btn" style="border-color:#f7b801;color:#f7b801" onclick="setYear(2030)">2030*</button>
+            </div>
+            <p style="font-size:10px;color:#7d8590;margin-top:8px;">* Prediksi model ML</p>
+        </div>
+
+        <!-- Statistik -->
+        <div class="sidebar-section">
+            <h3>📊 Statistik KWPLH</h3>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="value" id="stat-total">—</div>
+                    <div class="label">Luas (ha)</div>
+                </div>
+                <div class="stat-card">
+                    <div class="value" id="stat-kappa" style="color:#3b82f6">0.94</div>
+                    <div class="label">Kappa Index</div>
+                </div>
+                <div class="stat-card">
+                    <div class="value" id="stat-oa" style="color:#f7b801">94.1%</div>
+                    <div class="label">Overall Acc.</div>
+                </div>
+                <div class="stat-card">
+                    <div class="value" id="stat-change">—</div>
+                    <div class="label">Δ vs 2014</div>
+                </div>
+            </div>
+            <p style="font-size:10px;color:#7d8590;margin-top:8px;">
+                📍 Jl. Soekarno-Hatta Km 23, Balikpapan Utara
+            </p>
+        </div>
+
+        <!-- Prediksi -->
+        <div class="sidebar-section">
+            <h3>🔮 Prediksi KWPLH (ANN/CA)</h3>
+            <div class="prediction-bar">
+                <div class="pred-year">Prediksi 2025</div>
+                <div class="pred-area">19.8 ha</div>
+                <div class="pred-change change-down">▼ -6.6% dari 2023</div>
+            </div>
+            <div class="prediction-bar">
+                <div class="pred-year">Prediksi 2027</div>
+                <div class="pred-area">18.5 ha</div>
+                <div class="pred-change change-down">▼ -12.7% dari 2023</div>
+            </div>
+            <div class="prediction-bar">
+                <div class="pred-year">Prediksi 2030</div>
+                <div class="pred-area">17.6 ha</div>
+                <div class="pred-change change-down">▼ -16.9% dari 2023</div>
+            </div>
+            <p style="font-size:10px;color:#7d8590;margin-top:8px;">* Estimasi awal — akan diperbarui setelah model ML dilatih dengan data lapangan</p>
+        </div>
+
+        <!-- Indeks Vegetasi Legend -->
+        <div class="sidebar-section">
+            <h3>🌱 Legenda NDVI</h3>
+            <div class="legend-gradient"></div>
+            <div class="legend-labels">
+                <span>-1 (Air)</span>
+                <span>0</span>
+                <span>+1 (Vegetasi)</span>
+            </div>
+            <p style="font-size:10px;color:#7d8590;margin-top:6px;">Mangrove: NDVI > 0.5</p>
+        </div>
+    </aside>
+
+    <!-- MAP CONTAINER -->
+    <div id="map">
+        <div class="map-toolbar">
+            <span>🗺️ <span id="coord-display">Arahkan kursor ke peta</span></span>
+            <span>📏 Klik area untuk info detail</span>
+            <span>🔍 Scroll untuk zoom</span>
+        </div>
+    </div>
+</div>
+
+<!-- Leaflet.js -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+// ── INISIALISASI PETA ──────────────────────────────────────
+// Koordinat: KWPLH Balikpapan (Kawasan Wisata Pendidikan Lingkungan Hidup)
+// Jl. Soekarno-Hatta Km 23, Balikpapan Utara, Kalimantan Timur
+const map = L.map('map', {
+    center: [-1.1320, 116.8380],  // Pusat KWPLH Balikpapan
+    zoom: 14,
+    zoomControl: false
+});
+
+// Tambah zoom control di posisi kanan bawah
+L.control.zoom({ position: 'bottomright' }).addTo(map);
+
+// ── BASE LAYERS ────────────────────────────────────────────
+const baseLayers = {
+    "OpenStreetMap": L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors',
+        maxZoom: 19
+    }),
+    "Satellite (Esri)": L.tileLayer(
+        'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+        attribution: '© Esri, Maxar',
+        maxZoom: 19
+    }),
+    "Dark Map": L.tileLayer(
+        'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+        attribution: '© CartoDB',
+        maxZoom: 19
+    })
+};
+
+// Default: Satellite view (paling cocok untuk mangrove)
+baseLayers["Satellite (Esri)"].addTo(map);
+L.control.layers(baseLayers, {}, { position: 'topright' }).addTo(map);
+
+// ── TAMPILKAN KOORDINAT SAAT HOVER ────────────────────────
+map.on('mousemove', function(e) {
+    const lat = e.latlng.lat.toFixed(5);
+    const lng = e.latlng.lng.toFixed(5);
+    document.getElementById('coord-display').textContent = `${lat}°, ${lng}°`;
+});
+
+// ── DATA MANGROVE (placeholder GeoJSON) ───────────────────
+// TODO: Ganti dengan data nyata dari Django API kamu!
+// Nanti: fetch('/api/mangrove/?year=2023').then(r => r.json()).then(data => ...)
+
+// DATA MANGROVE KWPLH BALIKPAPAN (placeholder — ganti dengan GeoJSON nyata dari survei lapangan)
+// Sumber: Perkiraan batas berdasarkan koordinat KWPLH Jl. Soekarno-Hatta Km 23, Balikpapan Utara
+// TODO: Replace dengan: fetch('/api/mangrove/?year=2023').then(r=>r.json()).then(data=>...)
+const demoMangroveGeoJSON = {
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "Zona Inti KWPLH Balikpapan",
+                "keterangan": "Hutan mangrove inti kawasan wisata pendidikan",
+                "luas_ha": 12.8,
+                "kerapatan": "Lebat (>1500 pohon/ha)",
+                "jenis_dominan": "Rhizophora apiculata, Avicennia marina",
+                "ndvi": 0.76,
+                "tahun": 2023,
+                "koordinat": "1°07'57\"S, 116°50'17\"E"
+            },
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [[
+                    [116.8340, -1.1280], [116.8390, -1.1265],
+                    [116.8420, -1.1290], [116.8415, -1.1330],
+                    [116.8380, -1.1355], [116.8340, -1.1340],
+                    [116.8315, -1.1310], [116.8340, -1.1280]
+                ]]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "Zona Penyangga KWPLH — Timur",
+                "keterangan": "Area penyangga dan jalur boardwalk pengunjung",
+                "luas_ha": 5.3,
+                "kerapatan": "Sedang (800-1200 pohon/ha)",
+                "jenis_dominan": "Sonneratia caseolaris, Bruguiera gymnorrhiza",
+                "ndvi": 0.61,
+                "tahun": 2023,
+                "koordinat": "1°07'51\"S, 116°50'31\"E"
+            },
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [[
+                    [116.8420, -1.1265], [116.8460, -1.1255],
+                    [116.8480, -1.1280], [116.8470, -1.1310],
+                    [116.8440, -1.1325], [116.8415, -1.1330],
+                    [116.8420, -1.1265]
+                ]]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "Area Rehabilitasi KWPLH — Barat",
+                "keterangan": "Area penanaman mangrove rehabilitasi (2018-2023)",
+                "luas_ha": 3.1,
+                "kerapatan": "Jarang (200-500 pohon/ha)",
+                "jenis_dominan": "Rhizophora mucronata (bibit muda)",
+                "ndvi": 0.42,
+                "tahun": 2023,
+                "koordinat": "1°08'03\"S, 116°50'05\"E"
+            },
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [[
+                    [116.8290, -1.1330], [116.8315, -1.1310],
+                    [116.8340, -1.1340], [116.8335, -1.1370],
+                    [116.8300, -1.1375], [116.8275, -1.1355],
+                    [116.8290, -1.1330]
+                ]]
+            }
+        }
+    ]
+};
+
+// Fungsi style layer mangrove
+function styleMangrove(feature) {
+    const ndvi = feature.properties.ndvi || 0.5;
+    const green = Math.round(ndvi * 200 + 50);  // Warna berdasarkan NDVI
+    return {
+        fillColor: `rgb(30, ${green}, 80)`,
+        weight: 2,
+        opacity: 1,
+        color: '#52b788',
+        fillOpacity: 0.6
+    };
+}
+
+// Popup konten — disesuaikan dengan properti KWPLH Balikpapan
+function onEachFeature(feature, layer) {
+    const p = feature.properties;
+    const popupContent = `
+        <div style="font-family:'Segoe UI',sans-serif; min-width:220px;">
+            <div style="background:#2d6a4f;color:#74c69d;padding:8px 12px;border-radius:6px 6px 0 0;font-weight:700;">
+                🌿 ${p.name}
+            </div>
+            <div style="padding:10px 12px;background:#161b22;border-radius:0 0 6px 6px;color:#e6edf3;font-size:12px;">
+                ${p.keterangan ? `<div style="color:#7d8590;margin-bottom:8px;font-style:italic;">${p.keterangan}</div>` : ''}
+                <div style="display:flex;justify-content:space-between;margin-bottom:5px;">
+                    <span style="color:#7d8590">Luas</span>
+                    <strong>${p.luas_ha.toLocaleString()} ha</strong>
+                </div>
+                <div style="display:flex;justify-content:space-between;margin-bottom:5px;">
+                    <span style="color:#7d8590">Kerapatan</span>
+                    <strong>${p.kerapatan}</strong>
+                </div>
+                ${p.jenis_dominan ? `
+                <div style="display:flex;justify-content:space-between;margin-bottom:5px;">
+                    <span style="color:#7d8590">Jenis</span>
+                    <strong style="font-size:11px;text-align:right;max-width:130px;">${p.jenis_dominan}</strong>
+                </div>` : ''}
+                <div style="display:flex;justify-content:space-between;margin-bottom:5px;">
+                    <span style="color:#7d8590">NDVI</span>
+                    <strong style="color:#52b788">${p.ndvi} ${p.ndvi > 0.6 ? '🟢' : p.ndvi > 0.4 ? '🟡' : '🔴'}</strong>
+                </div>
+                <div style="display:flex;justify-content:space-between;margin-bottom:5px;">
+                    <span style="color:#7d8590">Tahun Data</span>
+                    <strong>${p.tahun}</strong>
+                </div>
+                ${p.koordinat ? `
+                <div style="display:flex;justify-content:space-between;">
+                    <span style="color:#7d8590">Koordinat</span>
+                    <strong style="font-size:10px;font-family:monospace;color:#74c69d">${p.koordinat}</strong>
+                </div>` : ''}
+            </div>
+        </div>
+    `;
+    layer.bindPopup(popupContent);
+    layer.on('mouseover', function() { this.setStyle({ weight: 4, fillOpacity: 0.8 }); });
+    layer.on('mouseout',  function() { mangroveLayer.resetStyle(this); });
+}
+
+// Tambah layer mangrove ke peta
+const mangroveLayer = L.geoJSON(demoMangroveGeoJSON, {
+    style: styleMangrove,
+    onEachFeature: onEachFeature
+}).addTo(map);
+
+// Fit ke bounds layer
+map.fitBounds(mangroveLayer.getBounds().pad(0.2));
+
+// Update statistik KWPLH Balikpapan
+document.getElementById('stat-total').textContent = '21.2';  // ha
+document.getElementById('stat-change').textContent = '-8.1%';
+
+// ── YEAR SWITCHER ──────────────────────────────────────────
+function setYear(year) {
+    document.querySelectorAll('.year-btn').forEach(b => b.classList.remove('active'));
+    event.target.classList.add('active');
+
+    // TODO: Fetch dari Django API saat backend sudah siap
+    // fetch(`/api/mangrove/kwplh/?year=${year}`)
+    //   .then(r => r.json())
+    //   .then(data => { mangroveLayer.clearLayers(); mangroveLayer.addData(data); })
+
+    console.log(`[MAP] KWPLH Balikpapan — beralih ke tahun: ${year}`);
+    // Estimasi luas KWPLH Balikpapan per tahun (ha) — ganti dengan data nyata
+    const areas = { 2014: '28.5', 2018: '24.8', 2023: '21.2', 2030: '17.6' };
+    const changes = { 2014: 'referensi', 2018: '-12.9%', 2023: '-8.1%', 2030: '⚠ -16.9% (prediksi)' };
+    document.getElementById('stat-total').textContent = areas[year] || '—';
+    document.getElementById('stat-change').textContent = changes[year] || '—';
+}
+
+// ── LAYER CONTROL CHECKBOX ─────────────────────────────────
+document.getElementById('layer-mangrove').addEventListener('change', function() {
+    this.checked ? mangroveLayer.addTo(map) : map.removeLayer(mangroveLayer);
+});
+
+console.log('✅ WebGIS Mangrove berhasil dimuat!');
+console.log('📌 TODO: Hubungkan ke Django API untuk data nyata');
+</script>
+
+</body>
+</html>
