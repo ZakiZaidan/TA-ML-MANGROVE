@@ -17,7 +17,7 @@
 3. [Fondasi Paling Dasar: Kamus Analogi Anak Web & Sistem Informasi](#-3-fondasi-paling-dasar-kamus-analogi-anak-web--sistem-informasi)
 4. [Bedah Alur 8 Tahap Kerangka Penelitian (Bab 1.6) & 4 Tahap Teknis (Bab 3.3)](#-4-bedah-alur-8-tahap-kerangka-penelitian-bab-16--4-tahap-teknis-bab-33)
 5. [Bedah Tuntas Seluruh 15 Rumus (Persamaan 2.1 s.d. 2.15) dengan Contoh Angka](#-5-bedah-tuntas-seluruh-15-rumus-persamaan-21-sd-215-dengan-contoh-angka)
-6. [Bedah Arsitektur Sistem 4-Tier & Database WebGIS (Bab 2.3 & Bab 3.4.5)](#-6-bedah-arsitektur-sistem-4-tier--database-webgis-bab-23--bab-345)
+6. [Bedah Arsitektur Sistem 2-Tier & Database WebGIS (Bab 2.3 & Bab 3.4.5)](#-6-bedah-arsitektur-sistem-2-tier--database-webgis-bab-23--bab-345)
 7. [Metode & Kurikulum Belajar 7 Hari (1 Minggu Menguasai Seluruh Proposal)](#-7-metode--kurikulum-belajar-7-hari-1-minggu-menguasai-seluruh-proposal)
 8. [Bank Simulasi Tanya-Jawab Dosen Penguji Sempro (Beserta Jawaban Kunci)](#-8-bank-simulasi-tanya-jawab-dosen-penguji-sempro-beserta-jawaban-kunci)
 
@@ -38,7 +38,7 @@ Berdasarkan pemeriksaan menyeluruh terhadap berkas **`Proposal TA Achmad Zaki Za
 3. **Sumber Data Pasang Surut Tunggal (Pushidrosal, 2024):** Di PDF Final `(8).pdf` (Hal. 21, 43, 52, 58, 64, 66 PDF), verifikasi pasang surut ($\le 1{,}5\text{ m}$ LAT) mengacu tunggal pada **Tabel Pasang Surut Stasiun Teluk Balikpapan dari Pusat Hidro-Oseanografi TNI Angkatan Laut (Pushidrosal, 2024)** (tidak lagi menyebut BIG).
 4. **Sub-bab 2.2 Penelitian Terdahulu (Hal. 32–37 PDF):** Hanya menggunakan **Tabel 2.1 Penelitian Terdahulu (10 Jurnal)** tanpa Tabel 2.2 Matriks Keputusan.
 5. **Akhir Bab 2 (Hal. 48 PDF):** Bab 2 berakhir langsung pada **Sub-bab 2.4.5 Metrik Evaluasi Kinerja Model Klasifikasi & Validasi Spasial** (tanpa Sub-bab 2.5 Standar Regulasi).
-6. **Sub-bab 3.4 Konseptual Proyek (Hal. 57–65 PDF):** Terdiri atas 5 sub-bagian (`3.4.1 Dataset Sentinel-2`, `3.4.2 Atribut Fitur Spektral`, `3.4.3 Konseptual Random Forest`, `3.4.4 Konseptual CA-Markov`, dan `3.4.5 Konseptual Arsitektur 4-Tier WebGIS`), di mana tabel kaku 78 poligon sudah dihapus sepenuhnya sesuai revisi proposal.
+6. **Sub-bab 3.4 Konseptual Proyek (Hal. 57–65 PDF):** Terdiri atas 5 sub-bagian (`3.4.1 Dataset Sentinel-2`, `3.4.2 Atribut Fitur Spektral`, `3.4.3 Konseptual Random Forest`, `3.4.4 Konseptual CA-Markov`, dan `3.4.5 Konseptual Arsitektur 2-Tier WebGIS` — *catatan: di `(8).pdf` masih tertulis versi awal 4-Tier/FastAPI dan telah disesuaikan di `Revisi_Proposal_TA_2Tier_dan_Koreksi.docx`*`), di mana tabel kaku 78 poligon sudah dihapus sepenuhnya sesuai revisi proposal.
 
 > **Catatan Kecil pada PDF `(8).pdf` untuk Anda Ketahui Saat Sidang:**
 > - Pada **Daftar Isi (Hal. 7 PDF)**, baris `2.3 Teknologi` belum tercantum di antara `2.2 Penelitian Terdahulu` dan `2.4 Metode` (meskipun isi **Sub-bab 2.3 Teknologi** ada lengkap di **Hal. 38–42 PDF / Hal. 24–27 dokumen**).
@@ -63,12 +63,12 @@ Gunakan peta ini saat membuka `Proposal TA Achmad Zaki Zaidan (8).pdf` agar Anda
 | **BAB 2 METODOLOGI** | **29–48** | **15–34** | |
 | — `2.1 Domain Penelitian` | 29–30 | 15–16 | Lokasi Kariangau, spesies mangrove (*Rhizophora, Avicennia, Sonneratia, Nypa*), habitat bekantan & pesut, 3 ancaman utama (KIK, logistik IKN, pantauan titian kayu). |
 | — `2.2 Penelitian Terdahulu` | 32–37 | 18–23 | **Tabel 2.1 (10 Jurnal)** dari Valero-Jorge (2024) hingga Bunting (2022) beserta kelemahan masing-masing yang disempurnakan oleh TA Anda. |
-| — `2.3 Teknologi` (`2.3.1` s.d. `2.3.4`) | 38–42 | 24–27 | Narasi teknologi: Python Data Science (`2.3.1`), FastAPI & GeoJSON (`2.3.2`), Next.js & Leaflet.js (`2.3.3`), serta Arsitektur 4-Tier & PostGIS GiST (`2.3.4`). |
+| — `2.3 Teknologi` (`2.3.1` s.d. `2.3.4`) | 38–42 | 24–27 | Narasi teknologi: Python Data Science (`2.3.1`), GeoJSON & API Routes (`2.3.2`), Next.js & Leaflet.js (`2.3.3`), serta Arsitektur 2-Tier & PostGIS GiST (`2.3.4`). *(Di `(8).pdf` masih menyebut FastAPI/4-Tier sebelum revisi ke 2-Tier).* |
 | — `2.4 Metode` (`2.4.1` s.d. `2.4.5`) | 42–48 | 28–34 | **Tempat seluruh 15 Rumus berada!** Koreksi BOA (`Pers. 2.1`), 5 Indeks Spektral (`Pers. 2.2–2.6`), Random Forest (`Pers. 2.7`), CA-Markov (`Pers. 2.8–2.11`), Evaluasi Akurasi & FoM (`Pers. 2.12–2.15`). |
 | **BAB 3 RANCANGAN PROYEK** | **49–73** | **35–59** | |
 | — `3.1 Garis Besar` & `3.2 Flowchart` | 49–51 | 35–37 | Ringkasan eksekutif proyek & **Gambar 3.1 Flowchart Teknis Pembuatan Prototipe**. |
-| — `3.3 Prosedur` (`3.3.1` s.d. `3.3.4`) | 51–56 | 37–42 | Langkah kerja teknis **Tahap 1** (Pra-pemrosesan), **Tahap 2** (Ground Truth & RF), **Tahap 3** (CA-Markov & Hindcasting), **Tahap 4** (PostGIS, FastAPI, Leaflet). |
-| — `3.4 Konseptual Proyek` (`3.4.1`–`3.4.5`) | 57–65 | 43–51 | Spesifikasi dataset (**Tabel 3.1**), fitur spektral (**Tabel 3.2**), hiperparameter RF (**Tabel 3.3**), variabel CA-Markov (**Tabel 3.5**), & **Gambar 3.2 Arsitektur 4-Tier WebGIS**. |
+| — `3.3 Prosedur` (`3.3.1` s.d. `3.3.4`) | 51–56 | 37–42 | Langkah kerja teknis **Tahap 1** (Pra-pemrosesan), **Tahap 2** (Ground Truth & RF), **Tahap 3** (CA-Markov & Hindcasting), **Tahap 4** (PostGIS, Next.js API Routes, Leaflet). |
+| — `3.4 Konseptual Proyek` (`3.4.1`–`3.4.5`) | 57–65 | 43–51 | Spesifikasi dataset (**Tabel 3.1**), fitur spektral (**Tabel 3.2**), hiperparameter RF (**Tabel 3.3**), variabel CA-Markov (**Tabel 3.5**), & **Gambar 3.2 Arsitektur 2-Tier WebGIS** (versi revisi di `gambar_arsitektur_2tier.png`). |
 | — `3.5 Sumber Daya` & `3.6 Jadwal` | 66–73 | 52–59 | SDM, 5 material data, spesifikasi laptop Intel Core i7-14650HX (**Tabel 3.5**), & Jadwal proyek (**Tabel 3.8**). |
 
 ---
@@ -211,8 +211,8 @@ Tujuan Tahap 4 adalah menyajikan hasil pemetaan (2023–2026) dan proyeksi (2027
    - Menghitung luas tiap poligon dalam satuan **hektar ($\text{ha}$)** pada proyeksi datar **UTM Zona 50S (`EPSG:32750`)**, lalu mengubah koordinatnya ke **WGS84 (`EPSG:4326`)** sesuai standar **GeoJSON RFC 7946**.
 2. **Penyimpanan ke Basis Data Spasial (`PostgreSQL 17 + PostGIS 3.x`):**
    - Memasukkan poligon ke tabel **`klasifikasi_mangrove`** yang dilengkapi indeks spasial **GiST (*Generalized Search Tree*)** berkecepatan $\mathcal{O}(\log N)$, serta menyimpan rekapitulasi tahunan ke tabel **`statistik_luas`**.
-3. **Pembuatan *Backend* RESTful API (`Python FastAPI + Uvicorn ASGI`):**
-   - Menyediakan 5 *endpoint* `GET` *read-only* berfitur kompresi **HTTP Gzip** (`/api/mangrove/years`, `/api/mangrove/geojson/{tahun}`, `/api/mangrove/proyeksi/{tahun}`, `/api/mangrove/statistik`, dan `/docs`).
+3. **Integrasi *Data Access* via *Next.js API Routes* (di Vercel):**
+   - Menyediakan *endpoint* `GET` *read-only* internal (`Next.js API Routes`) berfitur kompresi **HTTP Gzip** (`/api/mangrove/years`, `/api/mangrove/geojson/[tahun]`, `/api/mangrove/proyeksi/[tahun]`, `/api/mangrove/statistik`) yang langsung mengeksekusi kueri SQL `ST_AsGeoJSON` ke PostgreSQL/PostGIS tanpa memerlukan *backend server* terpisah.
 4. **Pembuatan *Frontend* Peta Interaktif (`Next.js 15 + Leaflet.js`):**
    - Menampilkan kanvas peta interaktif `L.geoJSON`, tombol pilih tahun, *toggle* layer proyeksi 2027, grafik garis tren luasan hektar, kartu metrik akurasi (`OA, Kappa, F1, FoM`), dan *popup* detail poligon saat diklik.
 
@@ -376,26 +376,19 @@ $$FoM = \frac{B}{A + B + C + D} \times 100\% \tag{2.15}$$
 
 ---
 
-## 🖥️ 6. Bedah Arsitektur Sistem 4-Tier & Database WebGIS (Bab 2.3 & Bab 3.4.5)
+## 🖥️ 6. Bedah Arsitektur Sistem 2-Tier & Database WebGIS (Bab 2.3 & Bab 3.4.5)
 
-Bagian ini adalah **kekuatan utama Anda sebagai mahasiswa Sistem Informasi** (lihat **Gambar 3.2 di Hal. 64–65 PDF / Hal. 50–51 dokumen**):
+Bagian ini adalah **kekuatan utama Anda sebagai mahasiswa Sistem Informasi** (lihat diagram revisi di `gambar_arsitektur_2tier.png` dan narasi revisi lengkap di `Revisi_Proposal_TA_2Tier_dan_Koreksi.docx`):
 
 ```
+[PRA-SISTEM / OFFLINE PROCESSING — Google Colab (Python 3.10+)]
+• PySTAC-Client, Rasterio/GDAL, NumPy/SciPy (Pra-pemrosesan & 13 Fitur + Moore 3x3)
+• Scikit-Learn (Random Forest 200 Pohon) + Simulasi Proyeksi CA-Markov (2027)
+• GeoPandas/Shapely: Hitung Hektar di UTM 50S (EPSG:32750) → Ekspor GeoJSON (EPSG:4326)
+                                    │
+                                    ▼ (Load Offline ke Database Cloud)
 ┌─────────────────────────────────────────────────────────────────────────┐
-│ LAPISAN 1: SUMBER DATA (Data Source Layer)                              │
-│ • Sentinel-2 L2A (CDSE STAC API)    • Tabel Pasut Pushidrosal (2024)    │
-│ • Iklim BMKG Sepinggan (2024)       • Ortofoto VHR Google Earth & Esri  │
-└───────────────────────────────────┬─────────────────────────────────────┘
-                                    ▼
-┌─────────────────────────────────────────────────────────────────────────┐
-│ LAPISAN 2: PIPELINE ANALITIK OFFLINE PYTHON (Analytical Processing)     │
-│ • Rasterio/GDAL + NumPy/SciPy (Pra-pemrosesan & 13 Fitur + Moore 3x3)   │
-│ • Scikit-Learn (Random Forest 200 Pohon) + Simulasi Proyeksi CA-Markov  │
-│ • GeoPandas/Shapely: Hitung Hektar di UTM 50S (EPSG:32750) → WGS84      │
-└───────────────────────────────────┬─────────────────────────────────────┘
-                                    ▼
-┌─────────────────────────────────────────────────────────────────────────┐
-│ LAPISAN 3: BASIS DATA SPASIAL (Spatial Data Layer — PostgreSQL/PostGIS) │
+│ TIER 1: DATA TIER (PostgreSQL 17.6 + PostGIS 3.5.2 — Supabase / Neon)   │
 │ 1. Tabel `klasifikasi_mangrove`:                                        │
 │    • GEOMETRY(Polygon, 4326) (exploded polygons) + Indeks Spasial GiST  │
 │    • Kolom: kode_poligon, tahun, tipe ('klasifikasi'/'proyeksi'),       │
@@ -404,26 +397,26 @@ Bagian ini adalah **kekuatan utama Anda sebagai mahasiswa Sistem Informasi** (li
 │    • Kolom: tahun, luas_total_ha, jumlah_poligon, f1_score, oa_persen,  │
 │             kappa, fom (agar grafik dimuat dalam hitungan milidetik!)   │
 └───────────────────────────────────┬─────────────────────────────────────┘
+                                    │ SQL + ST_AsGeoJSON (Read-Only GET)
                                     ▼
 ┌─────────────────────────────────────────────────────────────────────────┐
-│ LAPISAN 4: LAYANAN API & PRESENTASI WEB (Service & Presentation Layer)  │
-│ • Backend Python FastAPI (Uvicorn ASGI + Kompresi HTTP Gzip):           │
+│ TIER 2: PRESENTATION TIER (Next.js 15 + API Routes + Leaflet.js @Vercel)│
+│ • Next.js API Routes (Kompresi HTTP Gzip):                              │
 │   1. GET /api/mangrove/years                                            │
-│   2. GET /api/mangrove/geojson/{tahun}                                  │
-│   3. GET /api/mangrove/proyeksi/{tahun}                                 │
+│   2. GET /api/mangrove/geojson/[tahun]                                  │
+│   3. GET /api/mangrove/proyeksi/[tahun]                                 │
 │   4. GET /api/mangrove/statistik                                        │
-│   5. GET /docs (Swagger UI)                                             │
-│ • Frontend Next.js 15 & Leaflet.js (Presentation Layer):                │
-│   Kanvas Peta L.geoJSON, Pemilih Tahun (2023–2026 & Proyeksi 2027),     │
+│ • Frontend React & Leaflet.js (L.geoJSON):                              │
+│   Kanvas Peta Interaktif, Pemilih Tahun (2023–2026 & Proyeksi 2027),    │
 │   Grafik Tren Luasan, Kartu Metrik Akurasi, dan Popup Klik Poligon.     │
 └─────────────────────────────────────────────────────────────────────────┘
 ```
 
 ### Tiga Poin Kunci Arsitektur WebGIS yang Wajib Anda Tekankan Saat Sidang:
-1. **Kenapa Disebut *Decoupled Presentation Layer*?**
-   - Karena proses *training Machine Learning* dan simulasi *CA-Markov* yang berat **tidak dijalankan saat user mengklik tombol di web**, melainkan diselesaikan di **Lapisan 2 (Offline Python Pipeline)**. WebGIS (FastAPI + Leaflet.js) fokus 100% menampilkan hasil yang sudah tervalidasi dari PostGIS (mengacu pada Orlandini dkk., 2026).
+1. **Kenapa Menggunakan Pola *2-Tier* + *Offline Processing* (Bukan 4-Tier)?**
+   - Karena proses *training Machine Learning* dan simulasi *CA-Markov* yang berat diselesaikan **secara *offline* di Google Colab** sebelum sistem web dijalankan (bukan dipicu secara *real-time* oleh pengguna). Oleh karena itu, sistem WebGIS *online* hanya membutuhkan **2 lapis (*2-Tier*)**: **Tier 1 (Data Tier)** pada PostgreSQL/PostGIS Cloud dan **Tier 2 (Presentation Tier)** pada Next.js 15 + API Routes + Leaflet.js di Vercel. Desain ini jauh lebih ringkas, hemat biaya operasional, serta menghindari *over-engineering* server API terpisah tanpa mengorbankan performa (mengacu pada Orlandini dkk., 2026).
 2. **Kenapa Tidak Pakai *GeoServer* seperti Penelitian Valero-Jorge dkk. (2024)?**
-   - GeoServer berjalan di atas *Java Virtual Machine* (JVM) yang memakan RAM server sangat besar (4–8 GB). Dengan mengekspor poligon langsung dari PostGIS (`ST_AsGeoJSON`) melalui **FastAPI + kompresi Gzip** ke **Leaflet.js**, arsitektur menjadi jauh lebih ringan dan cepat.
+   - GeoServer berjalan di atas *Java Virtual Machine* (JVM) yang memakan RAM server sangat besar (4–8 GB). Dengan mengekspor poligon langsung dari PostGIS (`ST_AsGeoJSON`) melalui **Next.js API Routes + kompresi HTTP Gzip** ke **Leaflet.js**, arsitektur menjadi jauh lebih ringan dan cepat.
 3. **Kenapa Pakai *Exploded Polygons* + Indeks *GiST* di PostGIS?**
    - *Exploded polygons* artinya setiap bercak poligon mangrove disimpan sebagai **1 baris (`row`) mandiri** bertipe `GEOMETRY(Polygon, 4326)` (bukan digabung jadi 1 `MultiPolygon` raksasa se-Kariangau). Dengan begitu, saat user mengklik 1 bercak mangrove di peta, indeks pohon pencarian **GiST (*Generalized Search Tree*)** (Peng dkk., 2024) langsung menemukan poligon tersebut dengan kecepatan logaritmik $\mathcal{O}(\log N)$ dan menampilkan luas hektarnya di *popup*.
 
@@ -469,11 +462,11 @@ Gunakan metode **Feynman Technique** (baca 30 menit $\rightarrow$ tutup PDF $\ri
   2. Apa itu **Validasi Independen 100 Titik Acak Terstratifikasi (Olofsson dkk., 2014)**? (50 titik di kelas mangrove, 50 titik di non-mangrove pada tiap peta tahunan untuk mengoreksi bias luas hektar pada selang kepercayaan 95% dengan target standar error $S(\hat{O}) \le 0{,}03$).
   3. Apa itu **Validasi *Hindcasting* 2025** dan bagaimana cara kerja rumus **Figure of Merit (`FoM`, Pers. 2.15)** ($A, B, C, D$) melawan 100 simulasi acak *Monte Carlo*?
 
-### 🗓️ HARI 6: Menguasai Teknologi & Arsitektur WebGIS 4-Tier
-- **Halaman PDF yang Dibaca:** Hal. 32–42 PDF (Tabel 2.1 Penelitian Terdahulu & Sub-bab 2.3 Teknologi) dan Hal. 55–56, 64–65 PDF (Tahap 4 & Sub-bab 3.4.5).
+### 🗓️ HARI 6: Menguasai Teknologi & Arsitektur WebGIS 2-Tier
+- **Halaman PDF yang Dibaca:** Hal. 32–42 PDF (Tabel 2.1 Penelitian Terdahulu & Sub-bab 2.3 Teknologi) dan Hal. 55–56, 64–65 PDF (Tahap 4 & Sub-bab 3.4.5 — gunakan versi revisi 2-Tier di `Revisi_Proposal_TA_2Tier_dan_Koreksi.docx` dan `gambar_arsitektur_2tier.png`).
 - **Target Paham Logika:**
   1. Peran masing-masing jurnal di Sub-bab 2.3 (`Seydi 2024`, `Valero-Jorge 2024`, `Orlandini 2026`, `Popa 2026`, `Butler 2016`, `Horbiński & Lorek 2020/2022`, `Geng 2026`, `Peng 2024`).
-  2. Struktur 2 tabel di PostgreSQL/PostGIS (`klasifikasi_mangrove` & `statistik_luas`), 5 *endpoint* FastAPI, kompresi Gzip, dan batasan WebGIS sebagai *presentation layer*.
+  2. Struktur 2 tabel di PostgreSQL/PostGIS (`klasifikasi_mangrove` & `statistik_luas`), *endpoint* `Next.js API Routes` (`read-only GET`), kompresi HTTP Gzip, dan batasan WebGIS sebagai *presentation layer*.
 
 ### 🗓️ HARI 7: Gladi Bersih Presentasi & Tanya-Jawab Penguji
 - Latihan presentasi 10–12 menit dari Bab 1 s.d. Bab 3, lalu jawab 8 pertanyaan penguji di Bagian 8 di bawah ini tanpa melihat catatan!
@@ -506,5 +499,5 @@ Berikut adalah **8 pertanyaan tersulit yang paling sering ditanyakan dosen pengu
    - **Jawaban Anda:** *"Validasi silang 5-Fold menguji kinerja algoritma pada poligon sampel tahun baseline 2023. Sedangkan protokol Olofsson dkk. (2014) menggunakan 100 titik acak terstratifikasi (50 mangrove, 50 non-mangrove) pada peta hasil klasifikasi tiap tahun (2023–2026) untuk mengoreksi potensi bias luasan peta dan menghasilkan estimasi luas hektar yang bebas bias beserta rentang interval kepercayaan 95%."*
 
 8. **Penguji:** *"Karena kamu mahasiswa Sistem Informasi, jelaskan bagaimana desain arsitektur WebGIS dan basis datamu!"*
-   - **Jawaban Anda:** *"Sistem dirancang dengan pola **4-Tier Decoupled Architecture** (Gambar 3.2). Pemrosesan berat citra dan ML dipisahkan pada pipeline offline Python agar tidak membebani web server. Hasilnya dikonversi menjadi poligon vektor berluas hektar akurat (dihitung pada proyeksi meter UTM Zona 50S `EPSG:32750` lalu direproyeksi ke WGS84 `EPSG:4326`), kemudian disimpan ke basis data **PostgreSQL 17 / PostGIS 3.5** pada tabel `klasifikasi_mangrove` (dengan struktur exploded polygons berindeks pohon spasial **GiST** berkecepatan $\mathcal{O}(\log N)$) dan tabel `statistik_luas`. Data disajikan melalui RESTful API asinkron **Python FastAPI** yang dikompresi **HTTP Gzip** menuju antarmuka peta **Next.js 15 & Leaflet.js** sebagai presentation layer mandiri tanpa memerlukan middleware berat seperti GeoServer."*
+   - **Jawaban Anda:** *"Sistem dirancang dengan pola **2-Tier Architecture** (Gambar 3.2 versi revisi) yang memisahkan komputasi analitik berat secara **offline di Google Colab**. Hasil klasifikasi dan proyeksi dikonversi menjadi poligon vektor berluas hektar akurat (dihitung pada proyeksi meter UTM Zona 50S `EPSG:32750` lalu direproyeksi ke WGS84 `EPSG:4326`), kemudian dimuat ke **Tier 1 (Data Tier)** berbasis **PostgreSQL 17.6 / PostGIS 3.5.2 (Cloud)** pada tabel `klasifikasi_mangrove` (struktur exploded polygons berindeks pohon spasial **GiST** berkecepatan $\mathcal{O}(\log N)$) dan tabel `statistik_luas`. Selanjutnya pada **Tier 2 (Presentation Tier)** di Vercel, **Next.js 15** (melalui **Next.js API Routes** berfitur `read-only GET` dan kompresi **HTTP Gzip**) langsung mengambil GeoJSON dari PostGIS untuk dirender pada antarmuka peta **Leaflet.js** tanpa memerlukan server middleware terpisah seperti GeoServer."*
 
